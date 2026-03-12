@@ -7,22 +7,23 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: #fff; min-height: 100vh; padding: 20px; }
-        .container { max-width: 1600px; margin: 0 auto; }
+        .container { max-width: 1800px; margin: 0 auto; }
         .header { text-align: center; padding: 30px 0; margin-bottom: 30px; }
         .header h1 { font-size: 48px; background: linear-gradient(90deg, #ffd700, #ff6b6b, #4ecdc4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 10px; }
         .header .date { font-size: 24px; color: #888; }
         
         /* 核心指标 */
-        .cards { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; margin-bottom: 30px; }
+        .cards { display: grid; grid-template-columns: repeat(7, 1fr); gap: 16px; margin-bottom: 30px; }
         .card { background: rgba(255,255,255,0.05); border-radius: 16px; padding: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.1); }
         .card .label { font-size: 13px; color: #888; margin-bottom: 8px; }
-        .card .value { font-size: 28px; font-weight: bold; margin-bottom: 5px; }
+        .card .value { font-size: 26px; font-weight: bold; margin-bottom: 5px; }
         .card .value.gold { color: #ffd700; }
         .card .value.green { color: #2ed573; }
         .card .value.blue { color: #54a0ff; }
         .card .value.red { color: #ff4757; }
         .card .value.purple { color: #a55eea; }
         .card .value.orange { color: #ffa502; }
+        .card .value.cyan { color: #00d2d3; }
         
         /* 分区 */
         .section { background: rgba(255,255,255,0.05); border-radius: 16px; padding: 24px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.1); }
@@ -30,11 +31,13 @@
         
         /* 表格 */
         table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 14px 12px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        th { color: #888; font-weight: normal; font-size: 14px; white-space: nowrap; }
+        th, td { padding: 14px 10px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        th { color: #888; font-weight: normal; font-size: 13px; white-space: nowrap; }
         tr:hover { background: rgba(255,255,255,0.05); }
         .name { font-weight: bold; font-size: 16px; }
         .money { color: #ffd700; font-weight: bold; }
+        .profit-positive { color: #2ed573; font-weight: bold; }
+        .profit-negative { color: #ff4757; font-weight: bold; }
         
         /* 标签 */
         .tag { padding: 4px 10px; border-radius: 20px; font-size: 12px; display: inline-block; }
@@ -47,7 +50,7 @@
         .kpi-card { background: rgba(255,255,255,0.05); border-radius: 12px; padding: 20px; text-align: center; }
         .kpi-card .name { font-size: 16px; margin-bottom: 12px; }
         .kpi-card .progress { height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; margin-bottom: 8px; }
-        .kpi-card .progress-bar { height: 100%; border-radius: 4px; transition: width 0.3s; }
+        .kpi-card .progress-bar { height: 100%; border-radius: 4px; }
         .kpi-card .progress-bar.done { background: #2ed573; }
         .kpi-card .progress-bar.miss { background: #ff4757; }
         .kpi-card .nums { font-size: 13px; color: #888; }
@@ -64,15 +67,15 @@
         .footer { text-align: center; padding: 30px; color: #666; font-size: 14px; }
         
         /* 响应式 */
-        @media (max-width: 1200px) {
-            .cards { grid-template-columns: repeat(3, 1fr); }
-            .kpi-grid { grid-template-columns: repeat(2, 1fr); }
-            .analysis-grid { grid-template-columns: 1fr; }
+        @media (max-width: 1400px) {
+            .cards { grid-template-columns: repeat(4, 1fr); }
+            table { font-size: 12px; }
+            th, td { padding: 10px 6px; }
         }
         @media (max-width: 768px) {
             .cards { grid-template-columns: repeat(2, 1fr); }
-            table { font-size: 13px; }
-            th, td { padding: 10px 6px; }
+            .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+            .analysis-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -103,6 +106,10 @@
                 <div class="value orange">¥1,696</div>
             </div>
             <div class="card">
+                <div class="label">总利润</div>
+                <div class="value cyan">¥7,800</div>
+            </div>
+            <div class="card">
                 <div class="label">总订单数</div>
                 <div class="value blue">265</div>
             </div>
@@ -114,7 +121,7 @@
         
         <!-- 详细数据表 -->
         <div class="section">
-            <h2>📊 详细数据表（所有字段）</h2>
+            <h2>📊 详细数据表（所有字段 + 利润）</h2>
             <table>
                 <thead>
                     <tr>
@@ -126,6 +133,8 @@
                         <th>结算金额</th>
                         <th>退款金额</th>
                         <th>订单数</th>
+                        <th>利润</th>
+                        <th>利润率</th>
                         <th>退款率</th>
                         <th>ROI</th>
                         <th>客单价</th>
@@ -143,6 +152,8 @@
                         <td class="money">¥14,013</td>
                         <td>¥513</td>
                         <td>180</td>
+                        <td class="profit-positive">+¥5,896</td>
+                        <td class="profit-positive">42.0%</td>
                         <td>3.5%</td>
                         <td>1.79</td>
                         <td>¥80.70</td>
@@ -158,6 +169,8 @@
                         <td class="money">¥4,434</td>
                         <td>¥994</td>
                         <td>54</td>
+                        <td class="profit-positive">+¥1,541</td>
+                        <td class="profit-positive">34.8%</td>
                         <td>18.3%</td>
                         <td>1.88</td>
                         <td>¥100.52</td>
@@ -173,6 +186,8 @@
                         <td class="money">¥1,035</td>
                         <td>-</td>
                         <td>5</td>
+                        <td class="profit-positive">+¥712</td>
+                        <td class="profit-positive">68.8%</td>
                         <td>0%</td>
                         <td>4.13</td>
                         <td>¥266.80</td>
@@ -185,9 +200,11 @@
                         <td>10</td>
                         <td>¥349</td>
                         <td class="money">¥967</td>
-                        <td class="money">-</td>
+                        <td class="money">¥778</td>
                         <td>¥189</td>
                         <td>26</td>
+                        <td class="profit-positive">+¥429</td>
+                        <td class="profit-positive">55.3%</td>
                         <td>19.5%</td>
                         <td>2.77</td>
                         <td>¥37.19</td>
@@ -203,6 +220,8 @@
                         <td style="font-weight:bold;" class="money">¥19,482</td>
                         <td style="font-weight:bold;">¥1,696</td>
                         <td style="font-weight:bold;">265</td>
+                        <td style="font-weight:bold;" class="profit-positive">+¥7,800</td>
+                        <td style="font-weight:bold;" class="profit-positive">40.0%</td>
                         <td style="font-weight:bold;">7.6%</td>
                         <td style="font-weight:bold;">1.91</td>
                         <td style="font-weight:bold;">¥83.98</td>
@@ -240,130 +259,168 @@
             </div>
         </div>
         
-        <!-- 数据分析 -->
+        <!-- 利润分析 -->
         <div class="section">
-            <h2>📈 数据分析</h2>
+            <h2>💰 利润分析（最重要指标）</h2>
             <div class="analysis-grid">
                 <div class="analysis-card">
-                    <h3>💰 销售分析</h3>
+                    <h3>📊 利润排名</h3>
                     <div class="analysis-item">
-                        <span>销售额最高</span>
-                        <span class="money">陈世月 ¥14,526 (占 65.2%)</span>
+                        <span>🥇 陈世月</span>
+                        <span class="profit-positive">+¥5,896 (占 75.6%)</span>
                     </div>
                     <div class="analysis-item">
-                        <span>销售额最低</span>
-                        <span>姚雪雨 ¥967 (占 4.3%)</span>
+                        <span>🥈 刘国健</span>
+                        <span class="profit-positive">+¥1,541 (占 19.8%)</span>
                     </div>
                     <div class="analysis-item">
-                        <span>客单价最高</span>
-                        <span>刘子祥 ¥266.80</span>
+                        <span>🥉 刘子祥</span>
+                        <span class="profit-positive">+¥712 (占 9.1%)</span>
                     </div>
                     <div class="analysis-item">
-                        <span>客单价最低</span>
-                        <span>姚雪雨 ¥37.19</span>
-                    </div>
-                </div>
-                
-                <div class="analysis-card">
-                    <h3>📊 效率分析</h3>
-                    <div class="analysis-item">
-                        <span>ROI 最高</span>
-                        <span class="green">刘子祥 4.13</span>
-                    </div>
-                    <div class="analysis-item">
-                        <span>ROI 最低</span>
-                        <span class="red">陈世月 1.79</span>
-                    </div>
-                    <div class="analysis-item">
-                        <span>退款率最低</span>
-                        <span class="green">刘子祥 0%</span>
-                    </div>
-                    <div class="analysis-item">
-                        <span>退款率最高</span>
-                        <span class="red">姚雪雨 19.5%</span>
+                        <span>4 姚雪雨</span>
+                        <span class="profit-positive">+¥429 (占 5.5%)</span>
                     </div>
                 </div>
                 
                 <div class="analysis-card">
-                    <h3>🎯 KPI 分析</h3>
+                    <h3>📈 利润率排名</h3>
                     <div class="analysis-item">
-                        <span>完成人数</span>
-                        <span class="green">3 人 (75%)</span>
+                        <span>🥇 刘子祥</span>
+                        <span class="profit-positive">68.8%</span>
                     </div>
                     <div class="analysis-item">
-                        <span>未完成人数</span>
-                        <span class="red">1 人 (25%)</span>
+                        <span>🥈 姚雪雨</span>
+                        <span class="profit-positive">55.3%</span>
                     </div>
                     <div class="analysis-item">
-                        <span>平均完成率</span>
-                        <span>80%</span>
+                        <span>🥉 陈世月</span>
+                        <span class="profit-positive">42.0%</span>
                     </div>
                     <div class="analysis-item">
-                        <span>总新品数</span>
-                        <span>32 个</span>
+                        <span>4 刘国健</span>
+                        <span class="profit-positive">34.8%</span>
                     </div>
                 </div>
                 
                 <div class="analysis-card">
-                    <h3>⚠️ 异常预警</h3>
+                    <h3>💡 利润洞察</h3>
                     <div class="analysis-item">
-                        <span>KPI 未完成</span>
-                        <span class="red">陈世月 (2/10)</span>
+                        <span>总利润</span>
+                        <span class="profit-positive">¥7,800</span>
                     </div>
                     <div class="analysis-item">
-                        <span>退款率>15%</span>
-                        <span class="red">姚雪雨 19.5%、刘国健 18.3%</span>
+                        <span>平均利润率</span>
+                        <span class="profit-positive">40.0%</span>
                     </div>
                     <div class="analysis-item">
-                        <span>ROI<2</span>
-                        <span class="yellow">陈世月 1.79</span>
+                        <span>利润贡献最大</span>
+                        <span>陈世月 (75.6%)</span>
                     </div>
                     <div class="analysis-item">
-                        <span>整体退款率</span>
-                        <span class="yellow">7.6% (正常)</span>
+                        <span>利润率最高</span>
+                        <span>刘子祥 (68.8%)</span>
+                    </div>
+                </div>
+                
+                <div class="analysis-card">
+                    <h3>⚠️ 利润预警</h3>
+                    <div class="analysis-item">
+                        <span>陈世月</span>
+                        <span class="yellow">利润高但 KPI 未完成</span>
+                    </div>
+                    <div class="analysis-item">
+                        <span>刘国健</span>
+                        <span class="yellow">退款率高影响利润</span>
+                    </div>
+                    <div class="analysis-item">
+                        <span>姚雪雨</span>
+                        <span class="yellow">客单价低限制利润</span>
+                    </div>
+                    <div class="analysis-item">
+                        <span>整体</span>
+                        <span class="green">利润率 40% 健康</span>
                     </div>
                 </div>
             </div>
         </div>
         
-        <!-- 建议 -->
+        <!-- 数据分析 -->
+        <div class="section">
+            <h2>📈 综合分析</h2>
+            <div class="analysis-grid">
+                <div class="analysis-card">
+                    <h3>💰 销售分析</h3>
+                    <div class="analysis-item"><span>销售额最高</span><span class="money">陈世月 ¥14,526</span></div>
+                    <div class="analysis-item"><span>销售额最低</span><span>姚雪雨 ¥967</span></div>
+                    <div class="analysis-item"><span>客单价最高</span><span>刘子祥 ¥266.80</span></div>
+                    <div class="analysis-item"><span>客单价最低</span><span>姚雪雨 ¥37.19</span></div>
+                </div>
+                
+                <div class="analysis-card">
+                    <h3>📊 效率分析</h3>
+                    <div class="analysis-item"><span>ROI 最高</span><span class="green">刘子祥 4.13</span></div>
+                    <div class="analysis-item"><span>ROI 最低</span><span class="red">陈世月 1.79</span></div>
+                    <div class="analysis-item"><span>退款率最低</span><span class="green">刘子祥 0%</span></div>
+                    <div class="analysis-item"><span>退款率最高</span><span class="red">姚雪雨 19.5%</span></div>
+                </div>
+                
+                <div class="analysis-card">
+                    <h3>🎯 KPI 分析</h3>
+                    <div class="analysis-item"><span>完成人数</span><span class="green">3 人 (75%)</span></div>
+                    <div class="analysis-item"><span>未完成人数</span><span class="red">1 人 (25%)</span></div>
+                    <div class="analysis-item"><span>平均完成率</span><span>80%</span></div>
+                    <div class="analysis-item"><span>总新品数</span><span>32 个</span></div>
+                </div>
+                
+                <div class="analysis-card">
+                    <h3>⚠️ 异常预警</h3>
+                    <div class="analysis-item"><span>KPI 未完成</span><span class="red">陈世月 (2/10)</span></div>
+                    <div class="analysis-item"><span>退款率>15%</span><span class="red">姚雪雨 19.5%、刘国健 18.3%</span></div>
+                    <div class="analysis-item"><span>ROI<2</span><span class="yellow">陈世月 1.79</span></div>
+                    <div class="analysis-item"><span>整体退款率</span><span class="yellow">7.6%</span></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 改进建议 -->
         <div class="section">
             <h2>💡 改进建议</h2>
             <div class="analysis-grid">
                 <div class="analysis-card">
                     <h3>陈世月</h3>
-                    <div class="analysis-item"><span>⚠️ 新品数严重不足</span><span class="red">2/10</span></div>
-                    <div class="analysis-item"><span>✅ 销售额第一</span><span class="green">¥14,526</span></div>
+                    <div class="analysis-item"><span>✅ 利润贡献第一</span><span class="profit-positive">+¥5,896</span></div>
+                    <div class="analysis-item"><span>❌ KPI 严重不足</span><span class="red">2/10</span></div>
                     <div class="analysis-item"><span>⚠️ ROI 偏低</span><span class="yellow">1.79</span></div>
-                    <div style="margin-top:10px;color:#888;font-size:13px;">建议：增加新品上架，优化广告投放效率</div>
+                    <div style="margin-top:10px;color:#888;font-size:13px;">建议：增加新品上架，优化广告投放效率，保持利润优势</div>
                 </div>
                 <div class="analysis-card">
                     <h3>刘国健</h3>
                     <div class="analysis-item"><span>✅ KPI 完成</span><span class="green">10/10</span></div>
                     <div class="analysis-item"><span>⚠️ 退款率偏高</span><span class="red">18.3%</span></div>
-                    <div class="analysis-item"><span>✅ ROI 良好</span><span class="green">1.88</span></div>
-                    <div style="margin-top:10px;color:#888;font-size:13px;">建议：加强产品质量检查，降低退款率</div>
+                    <div class="analysis-item"><span>✅ 利润稳定</span><span class="profit-positive">+¥1,541</span></div>
+                    <div style="margin-top:10px;color:#888;font-size:13px;">建议：加强产品质量检查，降低退款率提升利润</div>
                 </div>
                 <div class="analysis-card">
                     <h3>刘子祥</h3>
                     <div class="analysis-item"><span>✅ KPI 完成</span><span class="green">10/10</span></div>
-                    <div class="analysis-item"><span>✅ ROI 最高</span><span class="green">4.13</span></div>
+                    <div class="analysis-item"><span>✅ 利润率最高</span><span class="profit-positive">68.8%</span></div>
                     <div class="analysis-item"><span>✅ 零退款</span><span class="green">0%</span></div>
-                    <div style="margin-top:10px;color:#888;font-size:13px;">建议：保持当前策略，可适当增加投放</div>
+                    <div style="margin-top:10px;color:#888;font-size:13px;">建议：保持当前策略，适当增加投放扩大利润</div>
                 </div>
                 <div class="analysis-card">
                     <h3>姚雪雨</h3>
                     <div class="analysis-item"><span>✅ KPI 完成</span><span class="green">10/10</span></div>
                     <div class="analysis-item"><span>⚠️ 退款率最高</span><span class="red">19.5%</span></div>
                     <div class="analysis-item"><span>⚠️ 客单价最低</span><span class="yellow">¥37.19</span></div>
-                    <div style="margin-top:10px;color:#888;font-size:13px;">建议：优化选品质量，提升客单价</div>
+                    <div style="margin-top:10px;color:#888;font-size:13px;">建议：优化选品质量，提升客单价，降低退款率</div>
                 </div>
             </div>
         </div>
         
         <!-- 页脚 -->
         <div class="footer">
-            🤖 由小羊自动汇总生成 | 更新时间：2026-03-12 13:50 | 数据源：分公司每日数据汇总
+            🤖 由小羊自动汇总生成 | 更新时间：2026-03-12 14:00 | 数据源：分公司每日数据汇总 | 利润 = 结算金额 - 消耗
         </div>
     </div>
 </body>
