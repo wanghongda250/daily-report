@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔥 抖音电商每日战报 - 深度产品分析版</title>
+    <title>🔥 抖音电商每日战报 - 真实数据版</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: #fff; min-height: 100vh; padding: 20px; }
-        .container { max-width: 1800px; margin: 0 auto; }
+        .container { max-width: 1600px; margin: 0 auto; }
         .header { text-align: center; padding: 30px 0; margin-bottom: 30px; }
         .header h1 { font-size: 48px; background: linear-gradient(90deg, #ffd700, #ff6b6b, #4ecdc4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 10px; }
         .header .date { font-size: 24px; color: #888; }
+        .header .real-data-badge { display: inline-block; padding: 6px 16px; background: linear-gradient(90deg, #2ed573, #26a65b); border-radius: 20px; font-size: 14px; font-weight: bold; margin-top: 10px; }
         .cards { display: grid; grid-template-columns: repeat(7, 1fr); gap: 16px; margin-bottom: 30px; }
         .card { background: rgba(255,255,255,0.05); border-radius: 16px; padding: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.1); }
         .card .label { font-size: 13px; color: #888; margin-bottom: 8px; }
@@ -32,7 +33,6 @@
         .tag.red { background: rgba(255, 71, 87, 0.2); color: #ff4757; }
         .tag.yellow { background: rgba(255, 206, 86, 0.2); color: #ffcc56; }
         .tag.blue { background: rgba(84, 160, 255, 0.2); color: #54a0ff; }
-        .tag.purple { background: rgba(162, 117, 255, 0.2); color: #a275ff; }
         .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
         .kpi-card { background: rgba(255,255,255,0.05); border-radius: 12px; padding: 20px; text-align: center; }
         .kpi-card .name { font-size: 16px; margin-bottom: 12px; }
@@ -44,49 +44,31 @@
         .kpi-card .nums span { color: #fff; font-weight: bold; }
         .footer { text-align: center; padding: 30px; color: #666; font-size: 14px; }
         
-        /* 深度产品分析模块 */
         .insight-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 20px; }
         .insight-card { background: rgba(255,255,255,0.03); border-radius: 16px; padding: 24px; border: 1px solid rgba(255,255,255,0.08); }
         .insight-card h3 { font-size: 20px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
         
-        .product-rank { display: flex; align-items: center; gap: 16px; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 12px; margin-bottom: 12px; }
-        .product-rank .rank { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 16px; }
-        .product-rank .rank.gold { background: linear-gradient(135deg, #ffd700, #ff8c00); color: #000; }
-        .product-rank .rank.silver { background: linear-gradient(135deg, #c0c0c0, #808080); color: #000; }
-        .product-rank .rank.bronze { background: linear-gradient(135deg, #cd7f32, #8b4513); color: #fff; }
-        .product-rank .info { flex: 1; }
-        .product-rank .product-name { font-weight: bold; font-size: 15px; margin-bottom: 4px; }
-        .product-rank .product-meta { font-size: 13px; color: #888; }
-        .product-rank .metrics { text-align: right; }
-        .product-rank .profit { font-size: 20px; font-weight: bold; color: #2ed573; }
-        .product-rank .profit.loss { color: #ff4757; }
-        .product-rank .rate { font-size: 13px; color: #888; }
+        .person-rank { display: flex; align-items: center; gap: 16px; padding: 16px; background: rgba(255,255,255,0.03); border-radius: 12px; margin-bottom: 12px; }
+        .person-rank .rank { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px; }
+        .person-rank .rank.gold { background: linear-gradient(135deg, #ffd700, #ff8c00); color: #000; }
+        .person-rank .rank.silver { background: linear-gradient(135deg, #c0c0c0, #808080); color: #000; }
+        .person-rank .rank.bronze { background: linear-gradient(135deg, #cd7f32, #8b4513); color: #fff; }
+        .person-rank .info { flex: 1; }
+        .person-rank .person-name { font-weight: bold; font-size: 16px; margin-bottom: 4px; }
+        .person-rank .person-meta { font-size: 13px; color: #888; }
+        .person-rank .metrics { text-align: right; }
+        .person-rank .profit { font-size: 22px; font-weight: bold; color: #2ed573; }
+        .person-rank .profit.loss { color: #ff4757; }
+        .person-rank .rate { font-size: 13px; color: #888; }
         
         .category-bar { display: flex; align-items: center; margin-bottom: 12px; }
-        .category-bar .cat-name { width: 120px; font-weight: bold; }
-        .category-bar .bar-container { flex: 1; height: 24px; background: rgba(255,255,255,0.1); border-radius: 12px; overflow: hidden; margin: 0 16px; }
-        .category-bar .bar { height: 100%; border-radius: 12px; display: flex; align-items: center; padding-left: 12px; font-weight: bold; font-size: 13px; }
+        .category-bar .cat-name { width: 100px; font-weight: bold; }
+        .category-bar .bar-container { flex: 1; height: 28px; background: rgba(255,255,255,0.1); border-radius: 14px; overflow: hidden; margin: 0 16px; }
+        .category-bar .bar { height: 100%; border-radius: 14px; display: flex; align-items: center; padding-left: 12px; font-weight: bold; font-size: 14px; }
         .category-bar .bar.green { background: linear-gradient(90deg, #2ed573, #26a65b); }
         .category-bar .bar.red { background: linear-gradient(90deg, #ff4757, #c0392b); }
         .category-bar .bar.blue { background: linear-gradient(90deg, #54a0ff, #2e86de); }
         .category-bar .cat-value { width: 100px; text-align: right; font-weight: bold; }
-        
-        .quadrant-chart { position: relative; height: 400px; background: rgba(255,255,255,0.02); border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); }
-        .quadrant-chart .axis-x { position: absolute; bottom: 50%; left: 50px; right: 50px; height: 2px; background: rgba(255,255,255,0.3); }
-        .quadrant-chart .axis-y { position: absolute; top: 50px; bottom: 50px; left: 50px; width: 2px; background: rgba(255,255,255,0.3); }
-        .quadrant-chart .quadrant-label { position: absolute; font-size: 14px; color: #888; }
-        .quadrant-chart .q1 { top: 20px; right: 20px; color: #2ed573; }
-        .quadrant-chart .q2 { top: 20px; left: 20px; color: #54a0ff; }
-        .quadrant-chart .q3 { bottom: 20px; left: 20px; color: #888; }
-        .quadrant-chart .q4 { bottom: 20px; right: 20px; color: #ff4757; }
-        .quadrant-chart .product-dot { position: absolute; width: 16px; height: 16px; border-radius: 50%; transform: translate(-50%, 50%); cursor: pointer; }
-        .quadrant-chart .product-dot.star { background: #2ed573; box-shadow: 0 0 10px #2ed573; }
-        .quadrant-chart .product-dot.question { background: #ff4757; box-shadow: 0 0 10px #ff4757; }
-        .quadrant-chart .product-dot.cashcow { background: #54a0ff; box-shadow: 0 0 10px #54a0ff; }
-        .quadrant-chart .product-dot.dog { background: #888; box-shadow: 0 0 10px #888; }
-        .quadrant-chart .legend { position: absolute; bottom: 20px; right: 20px; display: flex; gap: 16px; }
-        .quadrant-chart .legend-item { display: flex; align-items: center; gap: 8px; font-size: 12px; }
-        .quadrant-chart .legend-dot { width: 12px; height: 12px; border-radius: 50%; }
         
         .diagnosis-card { background: rgba(255,255,255,0.03); border-radius: 12px; padding: 16px; margin-bottom: 12px; border-left: 4px solid #ff4757; }
         .diagnosis-card.profit { border-left-color: #2ed573; }
@@ -96,14 +78,8 @@
         .diagnosis-card .diag-suggestion { font-size: 14px; color: #fff; background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px; }
         .diagnosis-card .diag-suggestion strong { color: #ffd700; }
         
-        .trend-indicator { display: inline-flex; align-items: center; gap: 4px; padding: 4px 8px; border-radius: 4px; font-size: 12px; }
-        .trend-indicator.up { background: rgba(46, 213, 115, 0.2); color: #2ed573; }
-        .trend-indicator.down { background: rgba(255, 71, 87, 0.2); color: #ff4757; }
-        
-        .price-range { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
-        .price-tag { padding: 8px 16px; background: rgba(255,255,255,0.05); border-radius: 20px; font-size: 13px; }
-        .price-tag .range { font-weight: bold; color: #ffd700; }
-        .price-tag .count { color: #888; margin-left: 8px; }
+        .data-note { padding: 16px; background: rgba(46, 213, 115, 0.1); border-radius: 12px; border: 1px solid rgba(46, 213, 115, 0.3); margin-bottom: 20px; }
+        .data-note .note-title { font-weight: bold; color: #2ed573; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
         
         @media (max-width: 768px) { 
             .cards { grid-template-columns: repeat(2, 1fr); } 
@@ -117,6 +93,21 @@
         <div class="header">
             <h1>🔥 抖音电商每日战报</h1>
             <div class="date">📅 2026 年 3 月 12 日</div>
+            <div class="real-data-badge">✅ 数据来源于真实表格</div>
+        </div>
+        
+        <!-- 数据说明 -->
+        <div class="data-note">
+            <div class="note-title">
+                <span>📊</span>
+                <span>数据来源说明</span>
+            </div>
+            <div style="font-size: 13px; color: #888; line-height: 1.6;">
+                • 数据来源：2026-03-12_分公司数据汇总.xlsx（2026-03-12 09:48 创建）
+                <br>• 提交人员：刘国健、姚雪雨、陈世月、刘子祥（4 人全部提交）
+                <br>• 数据维度：每人 7 个核心指标（新品数、消耗、销售额、结算金额、退款金额、订单数）
+                <br>• 利润计算：利润 = 结算金额 - 消耗
+            </div>
         </div>
         
         <!-- 核心数据卡片（7 个） -->
@@ -135,7 +126,7 @@
             </div>
             <div class="card">
                 <div class="label">📦 总退款金额</div>
-                <div class="value red">¥1,235</div>
+                <div class="value red">¥1,696</div>
             </div>
             <div class="card">
                 <div class="label">📈 总利润</div>
@@ -177,18 +168,18 @@
                     <tr>
                         <td class="name">🥇</td>
                         <td class="name">陈世月</td>
-                        <td>10</td>
+                        <td>2</td>
                         <td>¥8,117</td>
                         <td class="money">¥14,526</td>
-                        <td class="money">¥12,800</td>
-                        <td>¥510</td>
+                        <td class="money">¥14,013</td>
+                        <td>¥513</td>
                         <td>180</td>
-                        <td class="money" style="color: #2ed573;">+¥4,683</td>
-                        <td>32.2%</td>
+                        <td class="money" style="color: #2ed573;">+¥5,897</td>
+                        <td>40.6%</td>
                         <td>3.5%</td>
                         <td>1.79</td>
-                        <td>✅ 100%</td>
-                        <td><span class="tag green">优秀</span></td>
+                        <td>❌ 20%</td>
+                        <td><span class="tag yellow">KPI 未达标</span></td>
                     </tr>
                     <tr>
                         <td class="name">🥈</td>
@@ -196,15 +187,15 @@
                         <td>10</td>
                         <td>¥2,893</td>
                         <td class="money">¥5,428</td>
-                        <td class="money">¥4,435</td>
-                        <td>¥993</td>
+                        <td class="money">¥4,434</td>
+                        <td>¥994</td>
                         <td>54</td>
-                        <td class="money" style="color: #2ed573;">+¥1,542</td>
+                        <td class="money" style="color: #2ed573;">+¥1,541</td>
                         <td>28.4%</td>
                         <td>18.3%</td>
                         <td>1.88</td>
                         <td>✅ 100%</td>
-                        <td><span class="tag green">正常</span></td>
+                        <td><span class="tag green">优秀</span></td>
                     </tr>
                     <tr>
                         <td class="name">🥉</td>
@@ -212,11 +203,11 @@
                         <td>10</td>
                         <td>¥323</td>
                         <td class="money">¥1,334</td>
-                        <td class="money">¥1,334</td>
+                        <td class="money">¥1,035</td>
                         <td>¥0</td>
                         <td>5</td>
-                        <td class="money" style="color: #2ed573;">+¥1,011</td>
-                        <td>75.8%</td>
+                        <td class="money" style="color: #2ed573;">+¥712</td>
+                        <td>53.3%</td>
                         <td>0%</td>
                         <td>4.13</td>
                         <td>✅ 100%</td>
@@ -225,18 +216,18 @@
                     <tr>
                         <td class="name">4</td>
                         <td class="name">姚雪雨</td>
-                        <td>2</td>
+                        <td>10</td>
                         <td>¥349</td>
                         <td class="money">¥967</td>
-                        <td class="money">¥913</td>
-                        <td>¥238</td>
+                        <td class="money">-</td>
+                        <td>¥189</td>
                         <td>26</td>
-                        <td class="money" style="color: #ff4757;">+¥564</td>
-                        <td>58.2%</td>
-                        <td>26.1%</td>
+                        <td class="money" style="color: #ff4757;">-¥349</td>
+                        <td>-</td>
+                        <td>19.5%</td>
                         <td>2.77</td>
-                        <td>❌ 20%</td>
-                        <td><span class="tag red">预警</span></td>
+                        <td>✅ 100%</td>
+                        <td><span class="tag green">完成 KPI</span></td>
                     </tr>
                 </tbody>
             </table>
@@ -247,14 +238,14 @@
             <h2>🎯 新品 KPI 完成情况 (目标：10 个/天)</h2>
             <div class="kpi-grid">
                 <div class="kpi-card">
-                    <div class="name">陈世月</div>
+                    <div class="name">刘国健</div>
                     <div class="progress">
                         <div class="progress-bar done" style="width: 100%"></div>
                     </div>
                     <div class="nums">10 / 10 <span>(100%)</span></div>
                 </div>
                 <div class="kpi-card">
-                    <div class="name">刘国健</div>
+                    <div class="name">姚雪雨</div>
                     <div class="progress">
                         <div class="progress-bar done" style="width: 100%"></div>
                     </div>
@@ -268,7 +259,7 @@
                     <div class="nums">10 / 10 <span>(100%)</span></div>
                 </div>
                 <div class="kpi-card">
-                    <div class="name">姚雪雨</div>
+                    <div class="name">陈世月</div>
                     <div class="progress">
                         <div class="progress-bar miss" style="width: 20%"></div>
                     </div>
@@ -277,310 +268,228 @@
             </div>
         </div>
 
-        <!-- 🔥 深度产品分析模块 -->
+        <!-- 深度数据分析 -->
         <div class="section">
-            <h2>📊 深度产品分析</h2>
+            <h2>📊 深度数据分析</h2>
             
             <div class="insight-grid">
-                <!-- 产品利润排行榜 -->
+                <!-- 个人利润排行榜 -->
                 <div class="insight-card">
-                    <h3>💰 产品利润 TOP5</h3>
+                    <h3>💰 个人利润贡献榜</h3>
                     
-                    <div class="product-rank">
+                    <div class="person-rank">
                         <div class="rank gold">1</div>
                         <div class="info">
-                            <div class="product-name">🌱 早熟九粒白芸豆种子豆角架豆四季豆种籽 L218</div>
-                            <div class="product-meta">陈世月 · 农用物资</div>
+                            <div class="person-name">陈世月</div>
+                            <div class="person-meta">销售额 ¥14,526 · 结算 ¥14,013</div>
                         </div>
                         <div class="metrics">
-                            <div class="profit">+¥2,000</div>
-                            <div class="rate">利润率 62.5%</div>
+                            <div class="profit">+¥5,897</div>
+                            <div class="rate">利润率 40.6%</div>
                         </div>
                     </div>
                     
-                    <div class="product-rank">
+                    <div class="person-rank">
                         <div class="rank silver">2</div>
                         <div class="info">
-                            <div class="product-name">☀️ 太阳能闪光灯汽车防追尾货车 led 灯 L216</div>
-                            <div class="product-meta">陈世月 · 汽车零配件</div>
+                            <div class="person-name">刘国健</div>
+                            <div class="person-meta">销售额 ¥5,428 · 结算 ¥4,434</div>
                         </div>
                         <div class="metrics">
-                            <div class="profit">+¥1,150</div>
-                            <div class="rate">利润率 59.0%</div>
+                            <div class="profit">+¥1,541</div>
+                            <div class="rate">利润率 28.4%</div>
                         </div>
                     </div>
                     
-                    <div class="product-rank">
+                    <div class="person-rank">
                         <div class="rank bronze">3</div>
                         <div class="info">
-                            <div class="product-name">🏠 人体自动感应灯小夜灯卧室床头充电 L352</div>
-                            <div class="product-meta">刘国健 · 家装灯饰</div>
+                            <div class="person-name">刘子祥</div>
+                            <div class="person-meta">销售额 ¥1,334 · 结算 ¥1,035</div>
                         </div>
                         <div class="metrics">
-                            <div class="profit">+¥700</div>
-                            <div class="rate">利润率 53.8%</div>
+                            <div class="profit">+¥712</div>
+                            <div class="rate">利润率 53.3%</div>
                         </div>
                     </div>
                     
-                    <div class="product-rank">
+                    <div class="person-rank">
                         <div class="rank">4</div>
                         <div class="info">
-                            <div class="product-name">💡 LED 太阳能庭院灯户外防水草坪灯 L350</div>
-                            <div class="product-meta">陈世月 · 家装灯饰</div>
+                            <div class="person-name">姚雪雨</div>
+                            <div class="person-meta">销售额 ¥967 · 结算 -</div>
                         </div>
                         <div class="metrics">
-                            <div class="profit">+¥650</div>
-                            <div class="rate">利润率 48.1%</div>
-                        </div>
-                    </div>
-                    
-                    <div class="product-rank">
-                        <div class="rank">5</div>
-                        <div class="info">
-                            <div class="product-name">🔦 强光手电筒可充电超亮远射 L351</div>
-                            <div class="product-meta">刘子祥 · 户外用品</div>
-                        </div>
-                        <div class="metrics">
-                            <div class="profit">+¥580</div>
-                            <div class="rate">利润率 72.5%</div>
+                            <div class="profit loss">-¥349</div>
+                            <div class="rate">数据缺失</div>
                         </div>
                     </div>
                 </div>
                 
-                <!-- 类目表现分析 -->
+                <!-- 人员表现对比 -->
                 <div class="insight-card">
-                    <h3>🏷️ 类目利润贡献</h3>
+                    <h3>📈 人员表现对比</h3>
                     
                     <div class="category-bar">
-                        <div class="cat-name">农用物资</div>
+                        <div class="cat-name">陈世月</div>
                         <div class="bar-container">
-                            <div class="bar green" style="width: 85%;">+¥2,000</div>
+                            <div class="bar green" style="width: 75%;">销售额 ¥14,526</div>
                         </div>
-                        <div class="cat-value">25.6%</div>
+                        <div class="cat-value">65.3%</div>
                     </div>
                     
                     <div class="category-bar">
-                        <div class="cat-name">汽车零配件</div>
+                        <div class="cat-name">刘国健</div>
                         <div class="bar-container">
-                            <div class="bar green" style="width: 65%;">+¥1,150</div>
+                            <div class="bar blue" style="width: 28%;">销售额 ¥5,428</div>
                         </div>
-                        <div class="cat-value">14.7%</div>
+                        <div class="cat-value">24.4%</div>
                     </div>
                     
                     <div class="category-bar">
-                        <div class="cat-name">家装灯饰</div>
+                        <div class="cat-name">刘子祥</div>
                         <div class="bar-container">
-                            <div class="bar blue" style="width: 55%;">+¥1,350</div>
+                            <div class="bar blue" style="width: 7%;">销售额 ¥1,334</div>
                         </div>
-                        <div class="cat-value">17.3%</div>
+                        <div class="cat-value">6.0%</div>
                     </div>
                     
                     <div class="category-bar">
-                        <div class="cat-name">户外用品</div>
+                        <div class="cat-name">姚雪雨</div>
                         <div class="bar-container">
-                            <div class="bar blue" style="width: 45%;">+¥800</div>
+                            <div class="bar red" style="width: 5%;">销售额 ¥967</div>
                         </div>
-                        <div class="cat-value">10.3%</div>
-                    </div>
-                    
-                    <div class="category-bar">
-                        <div class="cat-name">汽车用品</div>
-                        <div class="bar-container">
-                            <div class="bar red" style="width: 20%;">-¥700</div>
-                        </div>
-                        <div class="cat-value">-9.0%</div>
+                        <div class="cat-value">4.3%</div>
                     </div>
                     
                     <div style="margin-top: 20px; padding: 16px; background: rgba(255,255,255,0.03); border-radius: 12px;">
-                        <strong style="color: #ffd700;">💡 类目洞察：</strong>
+                        <strong style="color: #ffd700;">💡 人员洞察：</strong>
                         <div style="margin-top: 8px; font-size: 13px; color: #888;">
-                            • <span style="color: #2ed573;">农用物资</span> 利润率最高（62.5%），建议加大选品
-                            <br>• <span style="color: #ff4757;">汽车用品</span> 今日亏损，需检查是否选品问题或投放策略
-                            <br>• <span style="color: #54a0ff;">家装灯饰</span> 稳定贡献，保持现有节奏
+                            • <span style="color: #2ed573;">陈世月</span> 销售额占比 65.3%，但 KPI 仅完成 20%（2 个新品）
+                            <br>• <span style="color: #54a0ff;">刘国健、刘子祥、姚雪雨</span> KPI 全部达标（10 个新品）
+                            <br>• <span style="color: #ff4757;">姚雪雨</span> 结算金额缺失，需补全数据
                         </div>
                     </div>
                 </div>
             </div>
             
-            <!-- ROI-利润四象限分析 -->
+            <!-- 核心指标分析 -->
             <div class="insight-card" style="margin-bottom: 20px;">
-                <h3>🎯 产品四象限分析（ROI vs 利润率）</h3>
-                
-                <div class="quadrant-chart">
-                    <div class="axis-x"></div>
-                    <div class="axis-y"></div>
-                    
-                    <div class="quadrant-label q1">⭐ 明星产品<br><small>高 ROI 高利润</small></div>
-                    <div class="quadrant-label q2">💰 现金牛<br><small>低 ROI 高利润</small></div>
-                    <div class="quadrant-label q3">🐶 问题产品<br><small>低 ROI 低利润</small></div>
-                    <div class="quadrant-label q4">⚠️ 待优化<br><small>高 ROI 低利润</small></div>
-                    
-                    <!-- 明星产品（高 ROI 高利润） -->
-                    <div class="product-dot star" style="top: 30%; left: 75%;" title="九粒白芸豆种子 - ROI:4.13 利润率:62.5%"></div>
-                    <div class="product-dot star" style="top: 25%; left: 80%;" title="太阳能闪光灯 - ROI:2.63 利润率:59%"></div>
-                    
-                    <!-- 现金牛（低 ROI 高利润） -->
-                    <div class="product-dot cashcow" style="top: 35%; left: 40%;" title="人体感应灯 - ROI:1.88 利润率:53.8%"></div>
-                    <div class="product-dot cashcow" style="top: 40%; left: 35%;" title="LED 庭院灯 - ROI:1.79 利润率:48.1%"></div>
-                    
-                    <!-- 问题产品（低 ROI 低利润） -->
-                    <div class="product-dot dog" style="top: 70%; left: 30%;" title="太阳能 led 灯 - ROI:0.8 利润率:-87.5%"></div>
-                    
-                    <!-- 待优化（高 ROI 低利润） -->
-                    <div class="product-dot question" style="top: 60%; left: 70%;" title="其他产品"></div>
-                    
-                    <div class="legend">
-                        <div class="legend-item">
-                            <div class="legend-dot star" style="background: #2ed573;"></div>
-                            <span>明星产品</span>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-dot" style="background: #54a0ff;"></div>
-                            <span>现金牛</span>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-dot" style="background: #888;"></div>
-                            <span>问题产品</span>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-dot" style="background: #ff4757;"></div>
-                            <span>待优化</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div style="margin-top: 16px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
-                    <div style="padding: 16px; background: rgba(46, 213, 115, 0.1); border-radius: 12px; border: 1px solid rgba(46, 213, 115, 0.3);">
-                        <strong style="color: #2ed573;">⭐ 明星产品策略：</strong>
-                        <div style="margin-top: 8px; font-size: 13px;">
-                            • 九粒白芸豆种子、太阳能闪光灯
-                            <br>• <strong>加大投放</strong>，扩大优势
-                            <br>• 考虑增加相似品类
-                        </div>
-                    </div>
-                    
-                    <div style="padding: 16px; background: rgba(255, 71, 87, 0.1); border-radius: 12px; border: 1px solid rgba(255, 71, 87, 0.3);">
-                        <strong style="color: #ff4757;">🔴 问题产品策略：</strong>
-                        <div style="margin-top: 8px; font-size: 13px;">
-                            • 太阳能超亮 led 灯夜市摆摊
-                            <br>• <strong>立即止损</strong>：降低消耗或下架
-                            <br>• 分析退款原因（质量？描述不符？）
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- 价格段分析 -->
-            <div class="insight-card" style="margin-bottom: 20px;">
-                <h3>💵 价格段分布与利润贡献</h3>
+                <h3>🎯 核心指标健康度</h3>
                 
                 <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 16px;">
-                    <div style="padding: 16px; background: rgba(255,255,255,0.03); border-radius: 12px;">
-                        <div style="font-size: 13px; color: #888; margin-bottom: 8px;">低价位</div>
-                        <div style="font-size: 24px; font-weight: bold; color: #ffd700;">¥0-50</div>
+                    <div style="padding: 16px; background: rgba(46, 213, 115, 0.1); border-radius: 12px; border: 1px solid rgba(46, 213, 115, 0.3);">
+                        <div style="font-size: 13px; color: #888; margin-bottom: 8px;">整体利润率</div>
+                        <div style="font-size: 28px; font-weight: bold; color: #2ed573;">35.1%</div>
                         <div style="margin-top: 8px; font-size: 13px;">
-                            <div>产品数：<strong>12 个</strong></div>
-                            <div>总利润：<strong style="color: #2ed573;">+¥1,200</strong></div>
-                            <div>平均利润率：<strong>35%</strong></div>
+                            <div>总利润：<strong>¥7,800</strong></div>
+                            <div>计算：¥7,800 / ¥22,255</div>
                         </div>
+                        <div style="margin-top: 8px; font-size: 12px; color: #2ed573;">✅ 健康（>30%）</div>
                     </div>
                     
-                    <div style="padding: 16px; background: rgba(255,255,255,0.03); border-radius: 12px;">
-                        <div style="font-size: 13px; color: #888; margin-bottom: 8px;">中低价位</div>
-                        <div style="font-size: 24px; font-weight: bold; color: #ffd700;">¥50-100</div>
+                    <div style="padding: 16px; background: rgba(84, 160, 255, 0.1); border-radius: 12px; border: 1px solid rgba(84, 160, 255, 0.3);">
+                        <div style="font-size: 13px; color: #888; margin-bottom: 8px;">整体 ROI</div>
+                        <div style="font-size: 28px; font-weight: bold; color: #54a0ff;">1.91</div>
                         <div style="margin-top: 8px; font-size: 13px;">
-                            <div>产品数：<strong>15 个</strong></div>
-                            <div>总利润：<strong style="color: #2ed573;">+¥4,500</strong></div>
-                            <div>平均利润率：<strong>52%</strong></div>
+                            <div>销售额：<strong>¥22,255</strong></div>
+                            <div>计算：¥22,255 / ¥11,682</div>
                         </div>
+                        <div style="margin-top: 8px; font-size: 12px; color: #54a0ff;">✅ 良好（>1.5）</div>
                     </div>
                     
-                    <div style="padding: 16px; background: rgba(255,255,255,0.03); border-radius: 12px;">
-                        <div style="font-size: 13px; color: #888; margin-bottom: 8px;">中高价位</div>
-                        <div style="font-size: 24px; font-weight: bold; color: #ffd700;">¥100-200</div>
+                    <div style="padding: 16px; background: rgba(255, 206, 86, 0.1); border-radius: 12px; border: 1px solid rgba(255, 206, 86, 0.3);">
+                        <div style="font-size: 13px; color: #888; margin-bottom: 8px;">整体退款率</div>
+                        <div style="font-size: 28px; font-weight: bold; color: #ffcc56;">7.6%</div>
                         <div style="margin-top: 8px; font-size: 13px;">
-                            <div>产品数：<strong>4 个</strong></div>
-                            <div>总利润：<strong style="color: #2ed573;">+¥1,800</strong></div>
-                            <div>平均利润率：<strong>45%</strong></div>
+                            <div>总退款：<strong>¥1,696</strong></div>
+                            <div>计算：¥1,696 / ¥22,255</div>
                         </div>
+                        <div style="margin-top: 8px; font-size: 12px; color: #ffcc56;">⚠️ 正常（<10%）</div>
                     </div>
                     
-                    <div style="padding: 16px; background: rgba(255,255,255,0.03); border-radius: 12px;">
-                        <div style="font-size: 13px; color: #888; margin-bottom: 8px;">高价位</div>
-                        <div style="font-size: 24px; font-weight: bold; color: #ff4757;">¥200+</div>
+                    <div style="padding: 16px; background: rgba(255, 159, 67, 0.1); border-radius: 12px; border: 1px solid rgba(255, 159, 67, 0.3);">
+                        <div style="font-size: 13px; color: #888; margin-bottom: 8px;">KPI 完成率</div>
+                        <div style="font-size: 28px; font-weight: bold; color: #ff9f43;">75%</div>
                         <div style="margin-top: 8px; font-size: 13px;">
-                            <div>产品数：<strong>1 个</strong></div>
-                            <div>总利润：<strong style="color: #ff4757;">-¥700</strong></div>
-                            <div>平均利润率：<strong>-35%</strong></div>
+                            <div>完成人数：<strong>3/4</strong></div>
+                            <div>计算：3 人完成 / 4 人</div>
                         </div>
-                    </div>
-                </div>
-                
-                <div style="margin-top: 16px; padding: 16px; background: rgba(84, 160, 255, 0.1); border-radius: 12px; border: 1px solid rgba(84, 160, 255, 0.3);">
-                    <strong style="color: #54a0ff;">💡 价格段洞察：</strong>
-                    <div style="margin-top: 8px; font-size: 13px;">
-                        • <span style="color: #2ed573;">¥50-100 价位段</span> 是主力利润来源（贡献 57.7% 利润）
-                        <br>• <span style="color: #ff4757;">¥200+ 高价位</span> 产品亏损，需检查定价策略或成本控制
-                        <br>• 建议：聚焦 ¥50-100 价位段，谨慎选择 ¥200+ 产品
+                        <div style="margin-top: 8px; font-size: 12px; color: #ff9f43;">⚠️ 良好（>70%）</div>
                     </div>
                 </div>
             </div>
             
-            <!-- 产品诊断与建议 -->
+            <!-- 人员诊断与建议 -->
             <div class="insight-card">
-                <h3>🔍 产品诊断与优化建议</h3>
+                <h3>🔍 人员诊断与优化建议</h3>
                 
-                <div class="diagnosis-card loss">
+                <div class="diagnosis-card profit">
                     <div class="diag-title">
-                        <span style="font-size: 20px;">🔴</span>
-                        <span>严重亏损产品</span>
+                        <span style="font-size: 20px;">⭐</span>
+                        <span>明星员工 - 陈世月</span>
                     </div>
                     <div class="diag-detail">
-                        <strong>太阳能超亮 led 灯夜市摆摊停电应急足球灯 L217</strong>（刘国健）
-                        <br>消耗 ¥1,500 · 结算 ¥800 · <strong>利润 -¥700</strong> · 利润率 -87.5%
+                        <strong>销售额贡献第一</strong>（¥14,526，占 65.3%）· 利润贡献第一（+¥5,897）· 利润率 40.6%
+                        <br>但 KPI 仅完成 2/10（20%），新品数量严重不足
                     </div>
                     <div class="diag-suggestion">
-                        <strong>🚨 紧急措施：</strong>
-                        <br>1. <strong>立即停止投放</strong> - 每多卖一单都在亏钱
-                        <br>2. <strong>分析退款原因</strong> - 检查产品质量、描述是否准确
-                        <br>3. <strong>考虑下架</strong> - 如果无法优化成本或提升转化，建议下架
-                        <br>4. <strong>学习教训</strong> - 同类型产品（太阳能、户外）需谨慎选品
+                        <strong>🚀 优化建议：</strong>
+                        <br>1. <strong>保持优势</strong> - 销售额和利润率都非常优秀，继续保持选品眼光
+                        <br>2. <strong>提升 KPI</strong> - 每日至少完成 10 个新品，不能只靠老品
+                        <br>3. <strong>分享经验</strong> - 在团队内分享高利润选品经验
+                        <br>4. <strong>关注退款</strong> - 退款率 3.5% 控制得很好，继续保持
+                    </div>
+                </div>
+                
+                <div class="diagnosis-card profit">
+                    <div class="diag-title">
+                        <span style="font-size: 20px;">✅</span>
+                        <span>优秀员工 - 刘国健</span>
+                    </div>
+                    <div class="diag-detail">
+                        <strong>KPI 完成</strong>（10/10）· 销售额第二（¥5,428）· 利润 +¥1,541
+                        <br>退款率 18.3% 偏高，需关注
+                    </div>
+                    <div class="diag-suggestion">
+                        <strong>💡 优化建议：</strong>
+                        <br>1. <strong>控制退款</strong> - 退款率 18.3% 接近警戒线（25%），需检查产品质量
+                        <br>2. <strong>提升利润</strong> - 利润率 28.4% 还有提升空间
+                        <br>3. <strong>保持节奏</strong> - KPI 完成很好，继续保持每日上新
+                    </div>
+                </div>
+                
+                <div class="diagnosis-card profit">
+                    <div class="diag-title">
+                        <span style="font-size: 20px;">🌟</span>
+                        <span>潜力员工 - 刘子祥</span>
+                    </div>
+                    <div class="diag-detail">
+                        <strong>KPI 完成</strong>（10/10）· 利润率最高（53.3%）· 退款率 0%
+                        <br>但销售额偏低（¥1,334），订单数少（5 单）
+                    </div>
+                    <div class="diag-suggestion">
+                        <strong>🎯 优化建议：</strong>
+                        <br>1. <strong>扩大规模</strong> - 利润率 53.3% 非常高，可以加大投放
+                        <br>2. <strong>增加订单</strong> - 仅 5 单，需要提升流量和转化
+                        <br>3. <strong>学习选品</strong> - 0 退款率说明选品质量好，分享经验
                     </div>
                 </div>
                 
                 <div class="diagnosis-card warning">
                     <div class="diag-title">
                         <span style="font-size: 20px;">⚠️</span>
-                        <span>退款率偏高产品</span>
+                        <span>需关注 - 姚雪雨</span>
                     </div>
                     <div class="diag-detail">
-                        <strong>人体自动感应灯小夜灯卧室床头充电 L352</strong>（刘国健）
-                        <br>退款率 28% · 阈值 25% · 虽然盈利但风险较高
+                        <strong>KPI 完成</strong>（10/10）· 销售额偏低（¥967）· <strong>结算金额缺失</strong>
+                        <br>无法计算利润，需补全数据
                     </div>
                     <div class="diag-suggestion">
-                        <strong>💡 优化建议：</strong>
-                        <br>1. <strong>检查产品质量</strong> - 联系供应商确认批次质量
-                        <br>2. <strong>优化商品描述</strong> - 避免过度承诺导致期望落差
-                        <br>3. <strong>增加客服介入</strong> - 主动联系退款客户了解原因
-                        <br>4. <strong>监控趋势</strong> - 如果退款率持续上升，考虑下架
-                    </div>
-                </div>
-                
-                <div class="diagnosis-card profit">
-                    <div class="diag-title">
-                        <span style="font-size: 20px;">⭐</span>
-                        <span>明星产品（建议加大投入）</span>
-                    </div>
-                    <div class="diag-detail">
-                        <strong>早熟九粒白芸豆种子豆角架豆四季豆种籽 L218</strong>（陈世月）
-                        <br>利润 +¥2,000 · 利润率 62.5% · ROI 4.13
-                    </div>
-                    <div class="diag-suggestion">
-                        <strong>🚀 扩张策略：</strong>
-                        <br>1. <strong>增加投放预算</strong> - 当前 ROI 优秀，可扩大规模
-                        <br>2. <strong>开发相似品类</strong> - 其他蔬菜种子、园艺用品
-                        <br>3. <strong>优化供应链</strong> - 与供应商谈更低成本，提升利润率
-                        <br>4. <strong>打造爆款</strong> - 考虑作为店铺引流产品
+                        <strong>🔧 紧急措施：</strong>
+                        <br>1. <strong>补全数据</strong> - 立即提供结算金额，否则无法评估业绩
+                        <br>2. <strong>提升销售</strong> - 销售额仅 ¥967，需提升选品质量
+                        <br>3. <strong>检查退款</strong> - 退款率 19.5%，关注产品质量
                     </div>
                 </div>
             </div>
@@ -593,20 +502,21 @@
                 <div style="padding: 20px; background: rgba(46, 213, 115, 0.1); border-radius: 12px; border: 1px solid rgba(46, 213, 115, 0.3);">
                     <h3 style="color: #2ed573; margin-bottom: 12px;">✅ 做得好的</h3>
                     <ul style="font-size: 14px; line-height: 1.8; color: #888;">
-                        <li>农用物资类目表现优异（利润率 62.5%）</li>
-                        <li>¥50-100 价位段是利润主力（贡献 57.7%）</li>
-                        <li>陈世月、刘子祥整体利润率健康（>30%）</li>
-                        <li>3 人完成 KPI，团队执行力强</li>
+                        <li>整体利润率 35.1%，健康水平（>30%）</li>
+                        <li>整体 ROI 1.91，投放效率良好</li>
+                        <li>3 人完成 KPI（75% 完成率）</li>
+                        <li>陈世月销售额贡献突出（65.3%）</li>
+                        <li>刘子祥利润率最高（53.3%），退款率 0%</li>
                     </ul>
                 </div>
                 
                 <div style="padding: 20px; background: rgba(255, 71, 87, 0.1); border-radius: 12px; border: 1px solid rgba(255, 71, 87, 0.3);">
                     <h3 style="color: #ff4757; margin-bottom: 12px;">⚠️ 需要改进的</h3>
                     <ul style="font-size: 14px; line-height: 1.8; color: #888;">
-                        <li>刘国健有 1 个产品严重亏损（-¥700）</li>
-                        <li>汽车用品类目今日亏损，需检查选品</li>
-                        <li>姚雪雨 KPI 仅完成 20%，需加强管理</li>
-                        <li>整体退款率 6.3%，接近警戒线</li>
+                        <li>陈世月 KPI 仅完成 20%（2/10），需加强</li>
+                        <li>姚雪雨结算金额缺失，无法评估利润</li>
+                        <li>刘国健退款率 18.3%，接近警戒线</li>
+                        <li>姚雪雨销售额偏低（¥967）</li>
                     </ul>
                 </div>
             </div>
@@ -614,17 +524,17 @@
             <div style="margin-top: 16px; padding: 20px; background: rgba(255, 206, 86, 0.1); border-radius: 12px; border: 1px solid rgba(255, 206, 86, 0.3);">
                 <h3 style="color: #ffcc56; margin-bottom: 12px;">🎯 明日行动建议</h3>
                 <div style="font-size: 14px; line-height: 1.8; color: #888;">
-                    <strong>1. 立即止损：</strong>刘国健下架太阳能 led 灯，避免继续亏损
-                    <br><strong>2. 加大优势：</strong>陈世月增加农用物资选品，复制成功模式
-                    <br><strong>3. 帮扶落后：</strong>与姚雪雨沟通，了解 KPI 未完成原因，提供选品支持
-                    <br><strong>4. 品类优化：</strong>谨慎选择汽车用品、高价位（¥200+）产品
-                    <br><strong>5. 质量管控：</strong>检查退款率偏高产品的质量问题
+                    <strong>1. 数据补全：</strong>姚雪雨立即提供结算金额数据
+                    <br><strong>2. KPI 督促：</strong>陈世月明日必须完成 10 个新品（今日仅 2 个）
+                    <br><strong>3. 退款管控：</strong>刘国健检查退款原因，控制在 15% 以内
+                    <br><strong>4. 经验分享：</strong>刘子祥分享高利润率（53.3%）和 0 退款的选品经验
+                    <br><strong>5. 帮扶姚雪雨：</strong>帮助提升选品质量，提高销售额
                 </div>
             </div>
         </div>
 
         <div class="footer">
-            🤖 由小羊自动汇总生成 | 更新时间：2026-03-12 15:10 | 📊 深度产品分析版 v2.0
+            🤖 由小羊自动汇总生成 | 更新时间：2026-03-12 15:20 | ✅ 真实数据版 | 数据来源：2026-03-12_分公司数据汇总.xlsx
         </div>
     </div>
 </body>
